@@ -1,0 +1,78 @@
+{
+  "name": "@json-render-plugins/antd",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "Ant Design component library for @json-render/core. JSON becomes beautiful Ant Design React components.",
+  "keywords": [
+    "json",
+    "ui",
+    "react",
+    "antd",
+    "ant-design",
+    "ai",
+    "generative-ui",
+    "llm",
+    "renderer",
+    "streaming",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/json-render-plugins/antd.git",
+    "directory": "packages/antd"
+  },
+  "homepage": "https://github.com/json-render-plugins/antd#readme",
+  "bugs": {
+    "url": "https://github.com/json-render-plugins/antd/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./catalog": {
+      "types": "./dist/catalog.d.ts",
+      "import": "./dist/catalog.mjs",
+      "require": "./dist/catalog.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "check-types": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@json-render/core": "*",
+    "@json-render/react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.3",
+    "antd": "^6.3.1",
+    "tsup": "^8.0.2",
+    "dayjs": "^1.11.11",
+    "typescript": "^5.4.5",
+    "zod": "^4.3.6"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "antd": "^6.0.0",
+    "zod": "^4.0.0"
+  }
+}
