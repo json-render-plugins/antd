@@ -1,15 +1,18 @@
 {
   "name": "@json-render-plugins/antd",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Ant Design component library for @json-render/core. JSON becomes beautiful Ant Design React components.",
   "keywords": [
     "json",
+    "json-render",
     "ui",
     "react",
     "antd",
     "ant-design",
     "ai",
+    "genui",
+    "a2ui",
     "generative-ui",
     "llm",
     "renderer",
@@ -18,15 +21,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/json-render-plugins/antd.git",
-    "directory": "packages/antd"
+    "url": "git+https://github.com/json-render-plugins/antd.git"
   },
   "homepage": "https://github.com/json-render-plugins/antd#readme",
   "bugs": {
     "url": "https://github.com/json-render-plugins/antd/issues"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

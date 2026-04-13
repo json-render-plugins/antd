@@ -1,0 +1,92 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write  # Required for OIDC
+
+
+jobs:
+  # Job 1: Install dependencies and build the project
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+        id: pnpm-cache
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies (Clean Install)
+        run: pnpm install --frozen-lockfile
+
+      - name: Run build script
+        run: pnpm run build
+
+      # Upload build artifacts to share with the next job
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          # Adjust the path (e.g., dist/) based on your build configuration
+          path: |
+            dist/
+            package.json
+            README.md
+            LICENSE
+
+  # Job 2: Publish the package to npm without re-building
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Download the artifacts produced in the build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js 22 for Registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      # Publish using OIDC authentication (automated token from GitHub Actions)
+      - name: Upgrade npm for OIDC
+        run: npm install -g npm@11.11.0 
+        
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NPM_CONFIG_PROVENANCE: true

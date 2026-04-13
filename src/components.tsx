@@ -45,7 +45,6 @@ import {
   Timeline,
   Carousel,
   Calendar,
-  List,
   Tree,
   Input,
   InputNumber,
@@ -57,8 +56,6 @@ import {
   Rate,
   DatePicker,
   TimePicker,
-  AutoComplete,
-  Cascader,
   Mentions,
   Button,
   Segmented,
@@ -66,7 +63,6 @@ import {
   Result,
   Flex,
   Form,
-  Affix,
   Anchor,
   Breadcrumb,
 } from "antd";
@@ -106,6 +102,7 @@ export const antdComponents = {
     props,
     children,
     slots,
+    emit,
   }: SlottedComponentProps<AntdProps<"Card">>) => {
     const extraSlot = slots?.extra?.[0];
     const coverSlot = slots?.cover?.[0];
@@ -123,6 +120,10 @@ export const antdComponents = {
         style={{
           width: props.width ?? "100%",
           height: props.height ?? undefined,
+          backgroundColor: props.backgroundColor ?? undefined,
+          borderRadius: props.borderRadius ?? undefined,
+          boxShadow: props.boxShadow ?? undefined,
+          border: props.border ?? undefined,
         }}
         actions={
           actionsSlots.length > 0
@@ -131,6 +132,7 @@ export const antdComponents = {
               ? props.actions.map((action, idx) => <span key={idx}>{action}</span>)
               : undefined
         }
+        onClick={() => emit("click")}
       >
         {children}
       </Card>
@@ -347,17 +349,6 @@ export const antdComponents = {
         items={menuItems}
         onClick={({ key }) => emit("select")}
       />
-    );
-  },
-
-  Affix: ({ props, children }: BaseComponentProps<AntdProps<"Affix">>) => {
-    return (
-      <Affix
-        offsetBottom={props.offsetBottom ?? undefined}
-        offsetTop={props.offsetTop ?? undefined}
-      >
-        {children}
-      </Affix>
     );
   },
 
@@ -604,7 +595,7 @@ export const antdComponents = {
     );
   },
 
-  Text: ({ props }: BaseComponentProps<AntdProps<"Text">>) => {
+  Text: ({ props, emit }: BaseComponentProps<AntdProps<"Text">>) => {
     return (
       <AntText
         type={props.type ?? undefined}
@@ -619,7 +610,10 @@ export const antdComponents = {
           color: props.color ?? undefined,
           backgroundColor: props.backgroundColor ?? undefined,
           fontSize: props.fontSize ?? undefined,
+          borderRadius: props.borderRadius ?? undefined,
+          padding: props.padding ?? undefined,
         }}
+        onClick={() => emit("click")}
       >
         {props.text}
       </AntText>
@@ -634,6 +628,18 @@ export const antdComponents = {
             ? { rows: props.rows }
             : (props.ellipsis ?? false)
         }
+        style={{
+          color: props.color ?? undefined,
+          backgroundColor: props.backgroundColor ?? undefined,
+          fontSize: props.fontSize ?? undefined,
+          fontWeight: props.fontWeight ?? undefined,
+          lineHeight: props.lineHeight ?? undefined,
+          borderRadius: props.borderRadius ?? undefined,
+          boxShadow: props.boxShadow ?? undefined,
+          border: props.border ?? undefined,
+          padding: props.padding ?? undefined,
+          margin: props.margin ?? undefined,
+        }}
       >
         {props.text}
       </AntParagraph>
@@ -714,6 +720,12 @@ export const antdComponents = {
         closable={props.closable ?? false}
         bordered={props.bordered ?? true}
         icon={props.icon ? <span className={props.icon} /> : undefined}
+        style={{
+          backgroundColor: props.backgroundColor ?? undefined,
+          borderRadius: props.borderRadius ?? undefined,
+          boxShadow: props.boxShadow ?? undefined,
+          border: props.border ?? undefined,
+        }}
         onClose={(e) => {
           e.preventDefault();
           emit("close");
@@ -819,6 +831,12 @@ export const antdComponents = {
         colon={props.colon ?? true}
         layout={props.layout ?? undefined}
         size={props.size ?? undefined}
+        style={{
+          backgroundColor: props.backgroundColor ?? undefined,
+          borderRadius: props.borderRadius ?? undefined,
+          boxShadow: props.boxShadow ?? undefined,
+          border: props.border ?? undefined,
+        }}
         items={items.map((item) => ({
           key: item.label,
           label: item.label,
@@ -896,46 +914,6 @@ export const antdComponents = {
         onSelect={(date) => {
           setValue(date.format("YYYY-MM-DD"));
           emit("select");
-        }}
-      />
-    );
-  },
-
-  List: ({
-    props,
-    children,
-  }: BaseComponentProps<AntdProps<"List">>) => {
-    const pagination =
-      props.pagination === false
-        ? false
-        : props.pagination === true
-          ? { pageSize: 10 }
-          : props.pagination
-            ? {
-                pageSize: props.pagination.pageSize ?? 10,
-                total: props.pagination.total ?? undefined,
-              }
-            : false;
-
-    const grid = props.grid
-      ? {
-          gutter: props.grid.gutter ?? undefined,
-          column: props.grid.column ?? undefined,
-        }
-      : undefined;
-
-    return (
-      <List
-        bordered={props.bordered ?? false}
-        loading={props.loading ?? false}
-        size={props.size ?? "default"}
-        split={props.split ?? true}
-        grid={grid}
-        pagination={pagination}
-        dataSource={props.dataSource ?? undefined}
-        renderItem={(item, index) => {
-          const childArray = Array.isArray(children) ? children : children ? [children] : [];
-          return <List.Item>{childArray[index] ?? null}</List.Item>;
         }}
       />
     );
@@ -1541,88 +1519,6 @@ export const antdComponents = {
     );
   },
 
-  AutoComplete: ({
-    props,
-    bindings,
-    emit,
-  }: BaseComponentProps<AntdProps<"AutoComplete">>) => {
-    const [boundValue, setBoundValue] = useBoundProp<string>(
-      props.value as string | undefined,
-      bindings?.value,
-    );
-    const [localValue, setLocalValue] = useState("");
-    const isBound = !!bindings?.value;
-    const value = isBound ? (boundValue ?? "") : localValue;
-    const setValue = isBound ? setBoundValue : setLocalValue;
-
-    const options = (props.options ?? []).map((opt) =>
-      typeof opt === "string" ? { label: opt, value: opt } : opt,
-    );
-
-    return (
-      <Form.Item label={props.label}>
-        <AutoComplete
-          options={options}
-          placeholder={props.placeholder ?? undefined}
-          value={value}
-          allowClear={props.allowClear ?? false}
-          disabled={props.disabled ?? false}
-          status={props.status ?? undefined}
-          onChange={(val) => {
-            setValue(val as string);
-            emit("change");
-          }}
-          onSelect={(val) => {
-            setValue(val as string);
-            emit("select");
-          }}
-        />
-      </Form.Item>
-    );
-  },
-
-  Cascader: ({
-    props,
-    bindings,
-    emit,
-  }: BaseComponentProps<AntdProps<"Cascader">>) => {
-    const [boundValue, setBoundValue] = useBoundProp<string[]>(
-      props.value as string[] | undefined,
-      bindings?.value,
-    );
-    const [localValue, setLocalValue] = useState<string[]>([]);
-    const isBound = !!bindings?.value;
-    const value = isBound ? (boundValue ?? []) : localValue;
-    const setValue = isBound ? setBoundValue : setLocalValue;
-
-    // Transform options to handle null children -> undefined
-    const transformOptions = (options: unknown[]): unknown[] => {
-      return options.map((opt: any) => ({
-        label: opt.label,
-        value: opt.value,
-        ...(opt.children ? { children: transformOptions(opt.children) } : {}),
-      }));
-    };
-
-    return (
-      <Form.Item label={props.label}>
-        <Cascader
-          options={transformOptions(props.options ?? []) as any}
-          placeholder={props.placeholder ?? undefined}
-          value={value}
-          allowClear={props.allowClear ?? true}
-          showSearch={props.showSearch ?? false}
-          disabled={props.disabled ?? false}
-          size={props.size ?? undefined}
-          onChange={(val) => {
-            setValue(val as string[]);
-            emit("change");
-          }}
-        />
-      </Form.Item>
-    );
-  },
-
   Mentions: ({
     props,
     bindings,
@@ -1678,6 +1574,14 @@ export const antdComponents = {
         href={props.href ?? undefined}
         target={props.target ?? undefined}
         htmlType={props.htmlType ?? undefined}
+        style={{
+          backgroundColor: props.backgroundColor ?? undefined,
+          borderRadius: props.borderRadius ?? undefined,
+          boxShadow: props.boxShadow ?? undefined,
+          border: props.border ?? undefined,
+          width: props.width ?? undefined,
+          height: props.height ?? undefined,
+        }}
         onClick={() => emit("click")}
       >
         {props.label}
@@ -1719,7 +1623,7 @@ export const antdComponents = {
     return (
       <AntLink
         href={props.href ?? "#"}
-        target={props.target ?? "_self"}
+        target={props.target ?? "_blank"}
         disabled={props.disabled ?? false}
         onClick={(e) => {
           const click = on("click");

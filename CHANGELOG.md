@@ -1,6 +1,40 @@
 # @json-render-plugins/antd
 
-## 0.11.0
+## 0.0.2
+
+### Minor Changes
+
+- Enhanced component styling support with custom CSS properties
+  - Added `backgroundColor`, `borderRadius`, `boxShadow`, `border` properties to:
+    - `Card` - Full style customization support
+    - `Button` - Button styling with custom colors and borders
+    - `Tag` - Tag component styling
+    - `Descriptions` - Description list styling
+  - Added comprehensive text styling properties to:
+    - `Paragraph` - `fontSize`, `fontWeight`, `lineHeight`, `borderRadius`, `boxShadow`, `border`, `padding`, `margin`
+    - `Text` - `borderRadius`, `padding` properties
+
+- Added event support
+  - `Card` - Added `click` event for card interactions
+  - `Text` - Added `click` event for clickable text
+
+- Improved component examples
+  - Enhanced `Card` example with full styling properties
+  - Enhanced `Button` example with borderRadius
+  - Enhanced `Tag` example with backgroundColor and border
+  - Enhanced `Text` example with type, backgroundColor, borderRadius, and padding
+  - Enhanced `Descriptions` example with bordered layout
+
+- Removed components
+  - `Affix` - Removed due to implementation complexity
+  - `List` - Removed due to API incompatibility with Ant Design's pagination onChange event
+  - `AutoComplete` - Removed to simplify component library
+  - `Cascader` - Removed to simplify component library
+
+- Fixed component property implementations
+  - `Paragraph` - Now properly implements `color` and `backgroundColor` from catalog definition
+
+## 0.0.1
 
 ### Minor Changes
 
