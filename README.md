@@ -1,6 +1,6 @@
 # @json-render-plugins/antd
 
-Pre-built [Ant Design](https://ant.design/) components for json-render. Drop-in catalog definitions and React implementations for 59 components built on Ant Design.
+Pre-built [Ant Design](https://ant.design/) components for json-render. Drop-in catalog definitions and React implementations for 55 components built on Ant Design.
 
 ## Installation
 
@@ -116,7 +116,7 @@ const { registry } = defineRegistry(catalog, {
 
 | Component | Description |
 |-----------|-------------|
-| `Card` | Container card with optional title and description |
+| `Card` | Container card with optional title, description, custom styling, and click event |
 | `Flex` | Flex layout container with gap, alignment, justify |
 | `Stack` | Stack layout container (alias for Flex) |
 | `Grid` | CSS Grid layout with configurable columns and gap |
@@ -132,7 +132,6 @@ const { registry } = defineRegistry(catalog, {
 | `Tabs` | Tabbed navigation |
 | `Collapse` | Collapsible accordion sections |
 | `Menu` | Navigation menu |
-| `Affix` | Pin content to fixed position when scrolling |
 | `Anchor` | Anchor navigation for page sections |
 | `Breadcrumb` | Breadcrumb navigation path |
 
@@ -151,23 +150,22 @@ const { registry } = defineRegistry(catalog, {
 | Component | Description |
 |-----------|-------------|
 | `Table` | Data table with columns and rows |
-| `Text` | Text content |
-| `Paragraph` | Paragraph text |
+| `Text` | Text content with semantic styles and click event |
+| `Paragraph` | Paragraph text with custom styling |
 | `Image` | Image display |
 | `Avatar` | User avatar with fallback |
 | `Badge` | Status badge |
-| `Tag` | Tag component |
+| `Tag` | Tag component with custom styling |
 | `Alert` | Alert banner |
 | `Progress` | Progress bar |
 | `Skeleton` | Loading placeholder |
 | `Spin` | Loading spinner |
 | `Empty` | Empty state |
 | `Statistic` | Statistic display |
-| `Descriptions` | Description list |
+| `Descriptions` | Description list with custom styling |
 | `Timeline` | Timeline display |
 | `Carousel` | Horizontally scrollable carousel |
 | `Calendar` | Calendar for date display/selection |
-| `List` | List component with pagination and grid |
 | `Tree` | Tree structure display and selection |
 
 ### Data Entry
@@ -186,15 +184,13 @@ const { registry } = defineRegistry(catalog, {
 | `Rate` | Star rating |
 | `DatePicker` | Date picker |
 | `TimePicker` | Time picker |
-| `AutoComplete` | Input with suggestions |
-| `Cascader` | Cascader selection for hierarchical data |
 | `Mentions` | Mentions input for @-tagging |
 
 ### Action
 
 | Component | Description |
 |-----------|-------------|
-| `Button` | Clickable button with variants |
+| `Button` | Clickable button with variants and custom styling |
 | `Link` | Anchor link |
 | `ButtonGroup` | Group of buttons |
 | `Segmented` | Segmented control |

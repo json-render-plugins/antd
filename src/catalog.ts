@@ -50,11 +50,24 @@ export const antdComponentDefinitions = {
       actions: z.array(z.string()).nullable(),
       width: z.union([z.number(), z.string()]).nullable(),
       height: z.union([z.number(), z.string()]).nullable(),
+      backgroundColor: z.string().nullable(),
+      borderRadius: z.union([z.number(), z.string()]).nullable(),
+      boxShadow: z.string().nullable(),
+      border: z.string().nullable(),
     }),
     slots: ["default", "extra", "cover", "actions"],
+    events: ["click"],
     description:
       "Container for displaying information related to a single subject. Supports title, cover image, actions at bottom. Use slots.default for card body, slots.extra for header actions, slots.cover for cover image, slots.actions for action buttons. Set loading to true for skeleton loading state.",
-    example: { title: "Overview", variant: "outlined", width: "100%" },
+    example: {
+      title: "Overview",
+      variant: "outlined",
+      width: "100%",
+      backgroundColor: "#ffffff",
+      borderRadius: 8,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+      border: "1px solid #e8e8e8"
+    },
   },
 
   Flex: {
@@ -173,17 +186,6 @@ export const antdComponentDefinitions = {
   // ==========================================================================
   // Navigation Components
   // ==========================================================================
-
-  Affix: {
-    props: z.object({
-      offsetBottom: z.number().nullable(),
-      offsetTop: z.number().nullable(),
-      target: z.string().nullable(),
-    }),
-    slots: ["default"],
-    description:
-      "Fixed position wrapper that pins content during scroll. Content becomes sticky when it reaches offsetTop (from top) or offsetBottom (from bottom). Use target to specify scroll container.",
-  },
 
   Anchor: {
     props: z.object({
@@ -490,10 +492,21 @@ export const antdComponentDefinitions = {
       color: z.string().nullable(),
       backgroundColor: z.string().nullable(),
       fontSize: z.union([z.number(), z.string()]).nullable(),
+      borderRadius: z.union([z.number(), z.string()]).nullable(),
+      padding: z.union([z.number(), z.string()]).nullable(),
     }),
+    events: ["click"],
     description:
       "Typography text with semantic styles. type controls color (secondary=gray, success=green, warning=orange, danger=red). Combine strong, italic, underline for emphasis. code shows monospace. copyable adds copy button.",
-    example: { text: "Hello, world!", strong: true, color: "#111", backgroundColor: "#f5f5f5", fontSize: 16 },
+    example: {
+      text: "Success Message",
+      type: "success",
+      strong: true,
+      backgroundColor: "#f6ffed",
+      fontSize: 14,
+      borderRadius: 4,
+      padding: 8
+    },
   },
 
   Paragraph: {
@@ -503,9 +516,25 @@ export const antdComponentDefinitions = {
       rows: z.number().nullable(),
       color: z.string().nullable(),
       backgroundColor: z.string().nullable(),
+      fontSize: z.union([z.number(), z.string()]).nullable(),
+      fontWeight: z.union([z.number(), z.string()]).nullable(),
+      lineHeight: z.union([z.number(), z.string()]).nullable(),
+      borderRadius: z.union([z.number(), z.string()]).nullable(),
+      boxShadow: z.string().nullable(),
+      border: z.string().nullable(),
+      padding: z.union([z.number(), z.string()]).nullable(),
+      margin: z.union([z.number(), z.string()]).nullable(),
     }),
     description:
       "Paragraph text block with optional truncation. Set ellipsis=true with rows to limit visible lines and show expandable '...'. Useful for long descriptions.",
+    example: {
+      text: "This is a paragraph with custom styling",
+      color: "#333333",
+      backgroundColor: "#f5f5f5",
+      fontSize: 16,
+      borderRadius: 4,
+      padding: 12
+    },
   },
 
   Image: {
@@ -567,11 +596,21 @@ export const antdComponentDefinitions = {
       closable: z.boolean().nullable(),
       bordered: z.boolean().nullable(),
       icon: z.string().nullable(),
+      backgroundColor: z.string().nullable(),
+      borderRadius: z.union([z.number(), z.string()]).nullable(),
+      boxShadow: z.string().nullable(),
+      border: z.string().nullable(),
     }),
     events: ["close"],
     description:
       "Label for categorizing, marking, or filtering. color accepts preset colors ('blue', 'green', 'red', etc.) or hex. closable shows close button for removal. Use for dynamic tag lists.",
-    example: { text: "Active", color: "green" },
+    example: {
+      text: "Active",
+      color: "green",
+      backgroundColor: "#f6ffed",
+      borderRadius: 4,
+      border: "1px solid #b7eb8f"
+    },
   },
 
   Alert: {
@@ -675,9 +714,22 @@ export const antdComponentDefinitions = {
       colon: z.boolean().nullable(),
       layout: z.enum(["horizontal", "vertical"]).nullable(),
       size: z.enum(["default", "middle", "small"]).nullable(),
+      backgroundColor: z.string().nullable(),
+      borderRadius: z.union([z.number(), z.string()]).nullable(),
+      boxShadow: z.string().nullable(),
+      border: z.string().nullable(),
     }),
     description:
       "Read-only key-value pairs display (like product details). items define rows with label and value. bordered adds table styling. column controls items per row. Use for profile info, settings display.",
+    example: {
+      title: "User Info",
+      bordered: true,
+      column: 2,
+      items: [
+        { label: "Name", value: "John Doe" },
+        { label: "Age", value: "28" }
+      ]
+    },
   },
 
   Timeline: {
@@ -720,35 +772,6 @@ export const antdComponentDefinitions = {
     events: ["change", "select"],
     description:
       "Calendar component for date display and selection. mode switches between month and year views. fullscreen=false for compact card mode. Use for scheduling, date picking, or event display.",
-  },
-
-  List: {
-    props: z.object({
-      dataSource: z.array(z.any()).nullable(),
-      bordered: z.boolean().nullable(),
-      loading: z.boolean().nullable(),
-      size: z.enum(["small", "default", "large"]).nullable(),
-      split: z.boolean().nullable(),
-      grid: z
-        .object({
-          gutter: z.number().nullable(),
-          column: z.number().nullable(),
-        })
-        .nullable(),
-      pagination: z
-        .union([
-          z.boolean(),
-          z.object({
-            pageSize: z.number().nullable(),
-            total: z.number().nullable(),
-          }),
-        ])
-        .nullable(),
-    }),
-    slots: ["default"],
-    events: ["change"],
-    description:
-      "Vertical list for displaying data items. Use grid for card layout. pagination enables page navigation. loading shows skeleton. Use slots.default for item rendering.",
   },
 
   Tree: {
@@ -1028,51 +1051,6 @@ export const antdComponentDefinitions = {
       "Time selection input with dropdown. format customizes display (default 'HH:mm:ss'). Use for scheduling, time-based settings.",
   },
 
-  AutoComplete: {
-    props: z.object({
-      label: z.string(),
-      name: z.string(),
-      options: z.array(
-        z.union([
-          z.string(),
-          z.object({ label: z.string(), value: z.string() }),
-        ]),
-      ),
-      placeholder: z.string().nullable(),
-      value: z.string().nullable(),
-      allowClear: z.boolean().nullable(),
-      disabled: z.boolean().nullable(),
-      status: z.enum(["error", "warning"]).nullable(),
-    }),
-    events: ["change", "select"],
-    description:
-      "Input with autocomplete suggestions. Shows matching options while typing. Use for search with history, email recipients, address completion.",
-  },
-
-  Cascader: {
-    props: z.object({
-      label: z.string(),
-      name: z.string(),
-      options: z.array(
-        z.object({
-          label: z.string(),
-          value: z.string(),
-          children: z.array(z.any()).nullable(),
-        }),
-      ),
-      placeholder: z.string().nullable(),
-      value: z.array(z.string()).nullable(),
-      allowClear: z.boolean().nullable(),
-      showSearch: z.boolean().nullable(),
-      disabled: z.boolean().nullable(),
-      size: z.enum(["small", "middle", "large"]).nullable(),
-    }),
-    events: ["change"],
-    description:
-      "Multi-level cascading selection (like location picker). options support nested children. value is path array (e.g., ['China', 'Beijing']). Use for addresses, category selection.",
-  },
-
-
   Mentions: {
     props: z.object({
       label: z.string(),
@@ -1119,11 +1097,17 @@ export const antdComponentDefinitions = {
       href: z.string().nullable(),
       target: z.enum(["_blank", "_self", "_parent", "_top"]).nullable(),
       htmlType: z.enum(["button", "submit", "reset"]).nullable(),
+      backgroundColor: z.string().nullable(),
+      borderRadius: z.union([z.number(), z.string()]).nullable(),
+      boxShadow: z.string().nullable(),
+      border: z.string().nullable(),
+      width: z.union([z.number(), z.string()]).nullable(),
+      height: z.union([z.number(), z.string()]).nullable(),
     }),
     events: ["click"],
     description:
       "Action button for user interactions. type='primary' for main actions. Use color + variant for granular control. color can be 'default', 'primary', 'danger'. variant: 'outlined', 'solid', 'filled', etc. ghost inverts colors for dark backgrounds.",
-    example: { label: "Submit", type: "primary" },
+    example: { label: "Submit", type: "primary", borderRadius: 4 },
   },
 
   ButtonGroup: {
